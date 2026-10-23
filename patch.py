@@ -85,7 +85,7 @@ for loc in (root / 'public/locales').glob('*/*.json'):
 # 4) Logos, Favicons, Quellcode-Seite, Webserver-Konfiguration
 for f in (here / 'assets/images').iterdir():
     shutil.copy(f, root / 'public/images' / f.name)
-for f in ('favicon.ico',):
+for f in ('favicon.ico', 'robots.txt'):
     shutil.copy(here / 'assets' / f, root / 'public' / f)
 
 import json
