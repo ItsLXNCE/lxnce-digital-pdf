@@ -100,6 +100,9 @@ RewriteCond %{REQUEST_URI} !^/(ar|be|da|de|es|fr|id|it|ja|ko|nl|pl|pt|ru|sk|sv|t
 RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [R=301,L]
 
+# bentopdf.com-eigene Seiten gibt es hier nicht (410 = dauerhaft entfernt)
+RewriteRule ^([a-z]{2}(-[A-Z]{2})?/)?(about|contact|faq|licensing|privacy|terms|kura|blog)(\.html|/.*)?$ - [G,L]
+
 # Existing files/dirs - serve directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

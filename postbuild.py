@@ -3,7 +3,7 @@
 aus dem Build, ergänzt .htaccess und bereinigt die Sitemap."""
 import re, sys, shutil, pathlib
 dist = pathlib.Path(sys.argv[1]); here = pathlib.Path(__file__).resolve().parent
-PAGES = ['about', 'contact', 'faq', 'licensing', 'privacy', 'terms']
+PAGES = ['about', 'contact', 'faq', 'licensing', 'privacy', 'terms', 'kura']
 removed = 0
 for d in [dist] + [p for p in dist.iterdir() if p.is_dir() and re.fullmatch(r'[a-z]{2}(-[A-Z]{2})?', p.name)]:
     for name in PAGES:
