@@ -34,5 +34,20 @@ for f in dist.rglob('*.html'):
     t2 = t2.replace("BentoPDF's", 'LXNCE PDF').replace('BentoPDF', 'LXNCE PDF').replace('>\x00</a>', ATTR)
     if t2 != t: f.write_text(t2, encoding='utf-8'); n += 1
 print('Seiten umbenannt:', n)
+# Startseiten: aussagekräftiger Titel und Beschreibung (statt generischem "PDF Tools")
+HOME = {
+    'de': ('PDF-Werkzeuge kostenlos online – zusammenfügen, bearbeiten, umwandeln | LXNCE PDF',
+           'Über 100 kostenlose PDF-Werkzeuge: PDFs zusammenfügen, komprimieren, bearbeiten, unterschreiben und in Word umwandeln. Alles im Browser, ohne Upload, ohne Anmeldung.'),
+    '': ('Free PDF tools online – merge, edit, convert | LXNCE PDF',
+         'More than 100 free PDF tools: merge, compress, edit, sign and convert PDFs. Runs entirely in your browser, no uploads, no signup.'),
+}
+for sub_dir, (title, desc) in HOME.items():
+    f = dist / sub_dir / 'index.html'
+    if not f.exists(): continue
+    t = f.read_text(encoding='utf-8')
+    t = re.sub(r'<title>[^<]*</title>', f'<title>{title}</title>', t, count=1)
+    t = re.sub(r'<meta name="title" content="[^"]*">', f'<meta name="title" content="{title}">', t, count=1)
+    t = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{desc}">', t, count=1)
+    f.write_text(t, encoding='utf-8')
 shutil.copy(here / 'assets/htaccess', dist / '.htaccess')
 print('entfernt:', removed)
