@@ -53,6 +53,34 @@ sub('src/style.css', '--primary-foreground: oklch(0.985 0.004 264.052);', '--pri
 sub('src/style.css', '--primary: oklch(0.637 0.203 263.711);', '--primary: #ff6a3a;')
 sub('src/style.css', '--primary-foreground: oklch(0.224 0.022 266.109);', '--primary-foreground: #ffffff;')
 
+# Neutrale Grautöne wie auf tools.lxnce.digital (statt Blaustich)
+LIGHT = {'background': '#ffffff', 'foreground': '#333639', 'card': '#ffffff', 'card-foreground': '#333639',
+         'popover': '#ffffff', 'popover-foreground': '#333639', 'secondary': '#f1f5f9', 'secondary-foreground': '#333639',
+         'muted': '#f1f5f9', 'muted-foreground': '#767c82', 'accent': '#f1f5f9', 'accent-foreground': '#333639',
+         'border': '#e5e7eb', 'input': '#e5e7eb', 'ring': '#ff5119', 'destructive-foreground': '#ffffff',
+         'sonner-success-foreground': '#ffffff'}
+DARK = {'background': '#1c1c1c', 'foreground': '#e8e8e8', 'card': '#232323', 'card-foreground': '#e8e8e8',
+        'popover': '#232323', 'popover-foreground': '#e8e8e8', 'secondary': '#2a2a2a', 'secondary-foreground': '#e8e8e8',
+        'muted': '#2a2a2a', 'muted-foreground': '#9a9a9a', 'accent': '#2a2a2a', 'accent-foreground': '#e8e8e8',
+        'border': '#333333', 'input': '#333333', 'ring': '#ff6a3a', 'destructive-foreground': '#ffffff',
+        'sidebar': '#232323', 'sidebar-primary': '#ff5119'}
+css = rd('src/style.css')
+def setvars(block_sel, values):
+    global css
+    m = re.search(re.escape(block_sel) + r' \{(.*?)\n\}', css, re.S)
+    if not m:
+        sys.exit(f'PATCH FEHLGESCHLAGEN: Block {block_sel} nicht gefunden')
+    body = m.group(1)
+    for k, v in values.items():
+        body, n = re.subn(r'(\n  --' + re.escape(k) + r': )[^;]+;', lambda mm: mm.group(1) + v + ';', body)
+        if n == 0:
+            sys.exit(f'PATCH FEHLGESCHLAGEN: --{k} in {block_sel} nicht gefunden')
+    css = css[:m.start(1)] + body + css[m.end(1):]
+setvars(':root', LIGHT)
+setvars('.dark', DARK)
+wr('src/style.css', css)
+sub('src/components/preview/Skeleton.vue', 'bg-[#f6f0f2]', 'bg-[#eceef1]', count=0)
+
 # ---------------------------------------------------------------- Kopf und Fuß
 wr('src/components/header/Header.vue', '''<template>
   <div
