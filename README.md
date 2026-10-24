@@ -37,3 +37,7 @@ Den Inhalt von `bentopdf/dist/` (inklusive `.htaccess`) auf einen Apache-Webserv
 - `postbuild.py`: entfernt bentopdf.com-Seiten, benennt die Marke um, legt `.htaccess` ab
 - `fetch-vendor.sh`: lädt die WASM-, OCR- und Schriftpakete
 - `assets/`: Logos, Icons, Quellcode-Seite, Apache-Konfiguration
+
+## Weitere Projekte in diesem Repository
+
+- [`signatur/`](signatur/): E-Mail-Signatur-Generator für https://tools.lxnce.digital/signatur/ (basiert auf MySigMail, AGPL-3.0)
